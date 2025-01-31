@@ -4,14 +4,17 @@ from pathlib import Path
 import json
 from datetime import datetime
 
+script_dir = Path(__file__).resolve().parent
+
 
 def log(msg):
     # Print log message to console and write to log file
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_entry = f"[{current_time}] {msg}\n"
     print(log_entry, end="")
-    os.makedirs("logs", exist_ok=True)
-    with open("logs/dns_updater.log", "a") as f:
+
+    os.makedirs(f"{script_dir}/logs", exist_ok=True)
+    with open(f"{script_dir}/logs/dns_updater.log", "a") as f:
         f.write(log_entry)
 
 
@@ -88,7 +91,6 @@ def update_ddns(api_token, zone_id, record_name):
         "Content-Type": "application/json",
     }
 
-    script_dir = Path(__file__).resolve().parent
     ip_cache_file = f"{script_dir}/current_ip.txt"
 
     try:
